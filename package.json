@@ -1,0 +1,29 @@
+{
+  "name": "react",
+  "version": "1.0.0",
+  "description": "learning react",
+  "keywords": [
+    "react"
+  ],
+  "homepage": "https://github.com/ApoorvVerma0770/React#readme",
+  "bugs": {
+    "url": "https://github.com/ApoorvVerma0770/React/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ApoorvVerma0770/React.git"
+  },
+  "license": "ISC",
+  "author": "apoorv",
+  "type": "commonjs",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "parcel": "^2.15.4"
+  },
+  "dependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  }
+}

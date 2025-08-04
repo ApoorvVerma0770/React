@@ -1,0 +1,5 @@
+/node_modules
+resListIgnore.js
+dist
+/.parcel-cache
+
