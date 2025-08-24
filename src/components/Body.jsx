@@ -3,7 +3,7 @@ import resList from "../utils/resListIgnore";
 import RestaurantCard from "./RestaurantCard.jsx";
 import Shimmer from "./Shimmer.jsx";
 import { Link } from "react-router";
-
+import useOnlineStatus from "../utils/useOnlineStatus.jsx";
 
 
 const Body =() =>{
@@ -30,6 +30,18 @@ const fetchData = async () => {
     setlistofRestaurants(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
     setFilteredRestrau(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
 }
+
+
+const onlineStatus = useOnlineStatus();
+if(onlineStatus === false) {
+    return <div user className="status">
+<h1> You are offline :\ </h1>
+    </div> 
+}
+
+
+
+
 //Conditional Renedering
 if(listofRestaurants.length===0){
     return(
@@ -39,24 +51,30 @@ if(listofRestaurants.length===0){
 
     return(
         <div className="body">
-            <div className ="filter">
-               <div className="search">
-                <input type ="text" className="search-text" value={SearchText}
+            <div className ="filter flex border border-black my-1.5">
+               <div className="m-2 p-2 pl-4">
+                <input  className=" border border-black px-1"
+                type ="text" value={SearchText}
                 onChange={(e)=>{
                     setSearchText(e.target.value);
                     
                 }}
                 ></input>
-                <button onClick={()=>{
+               
+                <button className="px-4 py-1.5 m-4 bg-green-100 rounded-lg"
+                 onClick={()=>{
                    const FilteredRestaurants= listofRestaurants.filter((res)=> res.info.name.toLowerCase().includes(SearchText.toLowerCase()));
                    setFilteredRestrau(FilteredRestaurants);
                 }}>Search</button>
+              
+               
                </div>
 
-                <button className="filter-btn" 
+               <div className="flex items-center m-4 p-4">
+               <button className="filter-btn px-4 py-1.5 bg-blue-200 rounded-lg" 
                 onClick={()=>{
                    const filteredList = listofRestaurants.filter(
-                    (res) => res.info.avgRating > 4.6);
+                    (res) => res.info.avgRating > 4.3);
                   setFilteredRestrau(filteredList);
                 
                 }}
@@ -67,7 +85,8 @@ if(listofRestaurants.length===0){
 
                 </button>
                </div>
-            <div className="res-container">
+               </div>
+            <div className="flex flex-wrap">
            {
            FilteredRestrau.map((restaurant) => (
           <Link  key={restaurant.info.id} to={"/restaurants/"+ restaurant.info.id }> < RestaurantCard resData={restaurant}/> </Link> 
