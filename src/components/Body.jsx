@@ -1,9 +1,11 @@
 import { useState , useEffect} from "react";
 import resList from "../utils/resListIgnore";
-import RestaurantCard from "./RestaurantCard.jsx";
+import RestaurantCard , {withPromotedLabel} from "./RestaurantCard.jsx";
 import Shimmer from "./Shimmer.jsx";
 import { Link } from "react-router";
 import useOnlineStatus from "../utils/useOnlineStatus.jsx";
+import UserContext from "../utils/UserContext.js";
+import { useContext } from "react";
 
 
 const Body =() =>{
@@ -14,7 +16,11 @@ const Body =() =>{
 
     const[SearchText,setSearchText]= useState("");
 
+    const RestaurantPromoted = withPromotedLabel(RestaurantCard);
 
+    const {loggedInInfo, setUserName} = useContext(UserContext);
+
+//console.log(listofRestaurants);
 
 useEffect(()=>{
     fetchData();
@@ -66,6 +72,8 @@ if(listofRestaurants.length===0){
                    const FilteredRestaurants= listofRestaurants.filter((res)=> res.info.name.toLowerCase().includes(SearchText.toLowerCase()));
                    setFilteredRestrau(FilteredRestaurants);
                 }}>Search</button>
+
+
               
                
                </div>
@@ -84,12 +92,21 @@ if(listofRestaurants.length===0){
                 Top Rated Restaurants
 
                 </button>
+                <label className="pl-6 m-2">Username: </label>
+                <input className="p-1 border border-black"
+                         value={loggedInInfo}
+                        onChange={(e)=>setUserName(e.target.value)}
+                         >
+                
+                </input>
                </div>
                </div>
             <div className="flex flex-wrap">
            {
            FilteredRestrau.map((restaurant) => (
-          <Link  key={restaurant.info.id} to={"/restaurants/"+ restaurant.info.id }> < RestaurantCard resData={restaurant}/> </Link> 
+          <Link  key={restaurant.info.id} to={"/restaurants/"+ restaurant.info.id }> 
+          {restaurant.info.availability.opened ? (<RestaurantPromoted resData={restaurant}/>) : (< RestaurantCard resData={restaurant}/>)}
+           </Link> 
            ))
            }
             </div>
